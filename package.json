@@ -1,0 +1,16 @@
+{
+  "name": "echo-social",
+  "version": "1.0.0",
+  "description": "Social media based on interests",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  },
+  "author": "Stefan Shivarov Jr.",
+  "license": "MIT"
+}
