@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require("sequelize");
+const { DataTypes, Model, STRING } = require("sequelize");
 const { sequelize } = require("../config/databaseConfig.js");
 
 class User extends Model {}
@@ -6,9 +6,10 @@ class User extends Model {}
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      autoIncrement: true,
+      allowNull: false,
     },
     username: {
       type: DataTypes.STRING,
@@ -24,7 +25,14 @@ User.init(
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+    },
+    googleId: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
+    facebookId: {
+      type: DataTypes.STRING,
+      unique: true,
     },
   },
   {
