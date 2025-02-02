@@ -1,4 +1,13 @@
-const { sequelize } = require("../config/databaseConfig");
 const User = require("./User");
+const Follow = require("./Follow");
 
-module.exports = { User };
+const models = {
+  User,
+  Follow,
+};
+
+Object.keys(models).forEach((modelName) => {
+  if (models[modelName].associate) {
+    models[modelName].associate(models);
+  }
+});

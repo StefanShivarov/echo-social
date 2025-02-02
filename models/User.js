@@ -1,5 +1,6 @@
-const { DataTypes, Model, STRING } = require("sequelize");
-const { sequelize } = require("../config/databaseConfig.js");
+const { DataTypes, Model } = require("sequelize");
+const { sequelize } = require("../config/databaseConfig");
+const Follow = require("./Follow");
 
 class User extends Model {}
 
@@ -41,5 +42,21 @@ User.init(
     tableName: "users",
   }
 );
+
+User.associate = (models) => {
+  User.belongsToMany(models.User, {
+    through: models.Follow,
+    as: "followers",
+    foreignKey: "followingId",
+    otherKey: "followerId",
+  });
+
+  User.belongsToMany(models.User, {
+    through: models.Follow,
+    as: "followedUsers",
+    foreignKey: "followerId",
+    otherKey: "followingId",
+  });
+};
 
 module.exports = User;
