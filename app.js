@@ -7,6 +7,7 @@ const flash = require("connect-flash");
 const homeRouter = require("./routers/homeRouter");
 const userRouter = require("./routers/userRouter");
 const authRouter = require("./routers/authRouter");
+require("./models");
 
 const app = express();
 
