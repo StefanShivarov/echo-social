@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile</title>
+  </head>
+  <body>
+    <h1>My Profile</h1>
+    <p>Username: <%= user.username %></p>
+    <p>Email: <%= user.email %></p>
+
+    <p>Followers: <a href="/users/<%= user.id %>/followers"> <%= followersCount %></a></p>
+    <p>Following: <a href="/users/<%= user.id %>/following"><%= followingCount %></a></p>
+
+    <a href="/">Back to Home</a>
+  </body>
+</html>
