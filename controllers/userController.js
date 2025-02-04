@@ -17,14 +17,11 @@ const signUpUser = async (req, res) => {
 };
 
 const showUserProfile = async (req, res) => {
-  const user = req.user;
-  if (!user) {
-    return res.redirect("/signin");
-  }
-
+  const userId = req.params.id;
   try {
-    const followersCount = await userService.getFollowersCount(user.id);
-    const followingCount = await userService.getFollowingCount(user.id);
+    const user = await userService.findUserById(userId);
+    const followersCount = await userService.getFollowersCount(userId);
+    const followingCount = await userService.getFollowingCount(userId);
 
     res.render("profile", { user, followersCount, followingCount });
   } catch (err) {
@@ -34,9 +31,11 @@ const showUserProfile = async (req, res) => {
 
 const showFollowing = async (req, res) => {
   const userId = req.params.id;
+  console.log("jorobradata");
   try {
+    console.log(userId);
     const following = await userService.getFollowing(userId);
-    res.render("following", { following });
+    res.render("following", { userId, following });
   } catch (err) {
     console.error("Error fetching followed users!", err);
   }
@@ -44,12 +43,62 @@ const showFollowing = async (req, res) => {
 
 const showFollowers = async (req, res) => {
   const userId = req.params.id;
-  try { 
+  try {
+    console.log(userId);
     const followers = await userService.getFollowersForUser(userId);
-    res.render("followers", {followers});
+    res.render("followers", { userId, followers });
   } catch (err) {
     console.error("Error fetching followers!", err);
   }
 };
 
-module.exports = { showSignUpForm, signUpUser, showUserProfile, showFollowing, showFollowers };
+const showExplorePage = async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    return res.redirect("/signin");
+  }
+
+  try {
+    const usersNotFollowed = await userService.findUsersNotFollowedBy(user.id);
+    res.render("explore", { usersNotFollowed });
+  } catch (err) {
+    console.error("Error fetching users!", err);
+  }
+};
+
+const followUser = async (req, res) => {
+  const followerId = req.user.id;
+  const followingId = req.params.id;
+
+  try {
+    await userService.followUser(followerId, followingId);
+    res.status(200).send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+};
+
+const unfollowUser = async (req, res) => {
+  const followerId = req.user.id;
+  const followingId = req.params.id;
+
+  try {
+    await userService.unfollowUser(followerId, followingId);
+    res.status(200).send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+};
+
+module.exports = {
+  showSignUpForm,
+  signUpUser,
+  showUserProfile,
+  showFollowing,
+  showFollowers,
+  showExplorePage,
+  followUser,
+  unfollowUser,
+};

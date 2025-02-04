@@ -70,6 +70,16 @@ const userRepository = {
       include: [{ model: User, as: "follower" }],
     }).then((follows) => follows.map((follows) => follows.follower));
   },
+
+  followUser: (followerId, followingId) => {
+    return Follow.create({ followerId, followingId });
+  },
+
+  unfollowUser: (followerId, followingId) => {
+    return Follow.destroy({
+      where: { followerId, followingId },
+    });
+  },
 };
 
 module.exports = userRepository;
