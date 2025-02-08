@@ -1,12 +1,6 @@
 const router = require("express").Router();
-const { showDashboard } = require("../controllers/homeController");
+const { showHomepage } = require("../controllers/homeController");
 
-router.get("/", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render("index", { user: req.user });
-  } else {
-    res.render("landing");
-  }
-});
+router.get("/", showHomepage);
 
 module.exports = router;
