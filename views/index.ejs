@@ -10,7 +10,21 @@
     <p>Welcome, <%= user.username %></p>
     <a href="/users/<%= user.id %>">My Profile</a>
     <a href="/explore">Explore</a>
+    <a href="/create-post">Create a new Post</a>
     <a href="/auth/signout">Sign Out</a>
+
+    <h2>Posts from Followed Users</h2>
+    <ul>
+      <% followedUsersPosts.forEach(post => { %>
+      <li>
+        <p><a href="/users/<%= post.user.id %>"><%= post.user.username %></a></p>
+        <small><%= post.createdAt.toDateString() %></small>
+        <h3><a href="/posts/<%= post.id %>"><%= post.title %></a></h3>
+        <p><%= post.content %></p>
+      </li>
+      <% }) %>
+    </ul>
+
     <% } else { %>
     <a href="/signup">Sign Up</a>
     <a href="/signin">Sign In</a>
