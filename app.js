@@ -7,6 +7,7 @@ const flash = require("connect-flash");
 const homeRouter = require("./routers/homeRouter");
 const userRouter = require("./routers/userRouter");
 const authRouter = require("./routers/authRouter");
+const postRouter = require("./routers/postRouter");
 require("./models");
 
 const app = express();
@@ -41,8 +42,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/", homeRouter);
-app.use("/", userRouter);
+app.use(homeRouter, userRouter, postRouter);
 app.use("/auth", authRouter);
 
 app.use((err, req, res, next) => {
