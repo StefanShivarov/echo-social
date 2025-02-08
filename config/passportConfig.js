@@ -5,17 +5,14 @@ const authService = require("../services/authService");
 const userService = require("../services/userService");
 
 passport.use(
-  new LocalStrategy(
-    { usernameField: "email" },
-    async (email, password, done) => {
-      try {
-        const user = await authService.handleSignIn(email, password);
-        return done(null, user);
-      } catch (err) {
-        return done(null, false, { message: err.message });
-      }
+  new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
+    try {
+      const user = await authService.handleSignIn(email, password);
+      return done(null, user);
+    } catch (err) {
+      return done(null, false, { message: err.message });
     }
-  )
+  })
 );
 
 passport.use(
