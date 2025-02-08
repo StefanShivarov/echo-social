@@ -6,6 +6,7 @@ const models = {
   User,
   Follow,
   Post,
+  Comment
 };
 
 Object.keys(models).forEach((modelName) => {

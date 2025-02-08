@@ -1,9 +1,8 @@
 const { Model, DataTypes } = require("sequelize");
-const { sequelize } = require("../config/databaseConfig");
 
-class Post extends Model {}
+class Comment extends Model {}
 
-Post.init(
+Comment.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -23,26 +22,34 @@ Post.init(
         key: "id",
       },
     },
+    postId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: "posts",
+        key: "id",
+      },
+    },
   },
   {
     sequelize,
-    modelName: "Post",
-    tableName: "posts",
+    modelName: "Comment",
+    tableName: "comments",
     createdAt: true,
     updatedAt: true,
   }
 );
 
-Post.associate = (models) => {
-  Post.belongsTo(models.User, {
+Comment.associate = (models) => {
+  Comment.belongsTo(models.User, {
     foreignKey: "userId",
     as: "user",
   });
 
-  Post.hasMany(models.Comment, {
+  Comment.belongsTo(models.Post, {
     foreignKey: "postId",
-    as: "comments",
+    as: "post",
   });
 };
 
-module.exports = Post;
+module.exports = Comment;
