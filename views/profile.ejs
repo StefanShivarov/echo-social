@@ -16,7 +16,16 @@
       Following:
       <a href="/users/<%= user.id %>/following"><%= followingCount %></a>
     </p>
-
+    <h2>Posts</h2>
+    <ul>
+      <% posts.forEach(post => { %>
+      <li>
+        <h3><%= post.title %></h3>
+        <p><%= post.content %></p>
+        <small>Posted on <%= post.createdAt.toDateString() %></small>
+      </li>
+      <% }) %>
+    </ul>
     <a href="/">Back to Home</a>
   </body>
 </html>

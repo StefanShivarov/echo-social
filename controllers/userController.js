@@ -1,4 +1,5 @@
 const userService = require("../services/userService");
+const postService = require("../services/postService");
 
 const showSignUpForm = (req, res) => {
   res.render("signup");
@@ -22,8 +23,9 @@ const showUserProfile = async (req, res) => {
     const user = await userService.findUserById(userId);
     const followersCount = await userService.getFollowersCount(userId);
     const followingCount = await userService.getFollowingCount(userId);
+    const posts = await postService.getPostsCreatedByUser(userId);
 
-    res.render("profile", { user, followersCount, followingCount });
+    res.render("profile", { user, followersCount, followingCount, posts });
   } catch (err) {
     console.error("Error loading profile!", err);
   }
@@ -31,7 +33,6 @@ const showUserProfile = async (req, res) => {
 
 const showFollowing = async (req, res) => {
   const userId = req.params.id;
-  console.log("jorobradata");
   try {
     console.log(userId);
     const following = await userService.getFollowing(userId);
@@ -44,7 +45,6 @@ const showFollowing = async (req, res) => {
 const showFollowers = async (req, res) => {
   const userId = req.params.id;
   try {
-    console.log(userId);
     const followers = await userService.getFollowersForUser(userId);
     res.render("followers", { userId, followers });
   } catch (err) {
