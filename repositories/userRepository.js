@@ -66,7 +66,7 @@ const userRepository = {
 
   findFollowersForUser: async (id) => {
     return Follow.findAll({
-      where: { followerId: id },
+      where: { followingId: id },
       include: [{ model: User, as: "follower" }],
     }).then((follows) => follows.map((follows) => follows.follower));
   },
