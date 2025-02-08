@@ -10,7 +10,9 @@ const userRepository = {
   },
 
   findUserById: (id) => {
-    return User.findByPk(id);
+    return User.findByPk(id, {
+      include: [{ model: User, as: "followedUsers" }],
+    });
   },
 
   findUserByEmail: (email) => {
