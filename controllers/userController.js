@@ -24,8 +24,9 @@ const showUserProfile = async (req, res) => {
     const followersCount = await userService.getFollowersCount(userId);
     const followingCount = await userService.getFollowingCount(userId);
     const posts = await postService.getPostsCreatedByUser(userId);
+    const loggedInUserId = req.user.id;
 
-    res.render("profile", { user, followersCount, followingCount, posts });
+    res.render("profile", { user, followersCount, followingCount, posts, loggedInUserId });
   } catch (err) {
     console.error("Error loading profile!", err);
   }

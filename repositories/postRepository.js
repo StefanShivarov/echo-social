@@ -17,7 +17,10 @@ const postRepository = {
     return Post.findAll({
       where: { userId },
       order: [["createdAt", "DESC"]],
-      include: [{ model: Comment, as: "comments", include: [{ model: User, as: "user" }] }],
+      include: [
+        { model: User, as: "user" },
+        { model: Comment, as: "comments", include: [{ model: User, as: "user" }] },
+      ],
     });
   },
 
@@ -40,6 +43,14 @@ const postRepository = {
     return Post.create(post);
   },
 
+  editPostById: (postId, postData) => {
+    return Post.update(postData, { where: { id: postId } });
+  },
+
+  deletePostById: (postId) => {
+    return Post.destroy({ where: { id: postId } });
+  },
+
   createComment: (commentData) => {
     return Comment.create(commentData);
   },
@@ -48,7 +59,11 @@ const postRepository = {
     return Comment.findByPk(commentId, {
       include: [{ model: User, as: "user" }],
     });
-  }
+  },
+
+  deleteCommentById: (commentId) => {
+    return Comment.destroy({ where: { id: commentId } });
+  },
 };
 
 module.exports = postRepository;

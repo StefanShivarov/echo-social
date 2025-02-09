@@ -33,6 +33,22 @@ const postService = {
     }
   },
 
+  editPostById: async (postId, postData) => {
+    try {
+      return await postRepository.editPostById(postId, postData);
+    } catch (err) {
+      console.error("Error updating post!", err);
+    }
+  },
+
+  deletePostById: async (postId) => {
+    try {
+      return await postRepository.deletePostById(postId);
+    } catch (err) {
+      console.error("Error deleting post!", err);
+    }
+  },
+
   createComment: async (commentData) => {
     try {
       return await postRepository.createComment(commentData);
@@ -46,6 +62,14 @@ const postService = {
       return await postRepository.getCommentById(commentId);
     } catch (err) {
       console.error("Error fetching comment!", err);
+    }
+  },
+
+  deleteCommentById: async (commentId) => {
+    try {
+      return await postRepository.deleteCommentById(commentId);
+    } catch (err) {
+      console.error("Error deleting comment!", err);
     }
   },
 };
