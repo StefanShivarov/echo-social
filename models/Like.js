@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require("sequelize");
 const { sequelize } = require("../config/databaseConfig");
 
-class Comment extends Model {}
+class Like extends Model {}
 
-Comment.init(
+Like.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -11,10 +11,7 @@ Comment.init(
       primaryKey: true,
       allowNull: false,
     },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
+
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -31,32 +28,39 @@ Comment.init(
         key: "id",
       },
     },
+    commentId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: "comments",
+        key: "id",
+      },
+    },
   },
   {
     sequelize,
-    modelName: "Comment",
-    tableName: "comments",
+    modelName: "Like",
+    tableName: "likes",
     createdAt: true,
     updatedAt: true,
   }
 );
 
-Comment.associate = (models) => {
-  Comment.belongsTo(models.User, {
+Like.associate = (models) => {
+  Like.belongsTo(models.User, {
     foreignKey: "userId",
     as: "user",
   });
 
-  Comment.belongsTo(models.Post, {
+  Like.belongsTo(models.Post, {
     foreignKey: "postId",
     as: "post",
   });
 
-  Comment.hasMany(models.Like, {
+  Like.belongsTo(models.Comment, {
     foreignKey: "commentId",
-    as: "likes",
-    onDelete: "CASCADE",
+    as: "comment",
   });
 };
 
-module.exports = Comment;
+module.exports = Like;

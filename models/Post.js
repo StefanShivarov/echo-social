@@ -44,6 +44,12 @@ Post.associate = (models) => {
     as: "comments",
     onDelete: "CASCADE",
   });
+
+  Post.hasMany(models.Like, {
+    foreignKey: "postId",
+    as: "likes",
+    onDelete: "CASCADE",
+  });
 };
 
 module.exports = Post;
