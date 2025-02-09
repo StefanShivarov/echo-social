@@ -32,6 +32,22 @@ const postService = {
       console.error("Error fetching post!", err);
     }
   },
+
+  createComment: async (commentData) => {
+    try {
+      return await postRepository.createComment(commentData);
+    } catch (err) {
+      console.error("Error creating comment!", err);
+    }
+  },
+
+  getCommentById: async (commentId) => {
+    try {
+      return await postRepository.getCommentById(commentId);
+    } catch (err) {
+      console.error("Error fetching comment!", err);
+    }
+  },
 };
 
 module.exports = postService;
