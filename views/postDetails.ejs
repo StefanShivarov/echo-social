@@ -3,13 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= post.title %></title>
+    <title>Post Details</title>
   </head>
   <body>
     <h3><a href="/users/<%= post.user.id %>"><%= post.user.username %></a></h3>
-    <h1><%= post.title %></h1>
+    <small><%= post.createdAt.toDateString() %></small>
     <p><%= post.content %></p>
-    <small>Posted on <%= post.createdAt.toDateString() %></small>
+    <% if (post.userId === userId) { %>
+    <a href="/posts/<%= post.id %>/edit">Edit</a>
+    <form action="/posts/<%= post.id %>?_method=DELETE" method="POST">
+      <button type="submit">Delete</button>
+    </form>
+    <% } %>
+    <h3>Comments</h3>
+    <ul class="comments-list">
+      <% post.comments.forEach(comment => { %>
+      <li>
+        <a href="/users/<%= comment.user.id %>"><h4><%= comment.user.username %></h4></a>
+        <p><%= comment.content %></p>
+        <small><%= comment.createdAt.toDateString() %></small>
+        <% if (comment.user.id === userId) { %>
+        <form
+          action="/posts/<%= post.id %>/comments/<%= comment.id %>?_method=DELETE"
+          method="POST"
+          class="delete-comment-form"
+        >
+          <button type="submit">Delete</button>
+        </form>
+        <% } %>
+      </li>
+      <% }) %>
+    </ul>
+    <form action="/posts/<%= post.id %>/comments" method="POST" class="comment-form">
+      <textarea name="content" placeholder="Add a comment..."></textarea>
+      <button type="submit">Comment</button>
+    </form>
     <a href="/">Back to Home</a>
   </body>
+  <script type="text/javascript" charset="utf-8" src="/js/comment.js"></script>
 </html>
