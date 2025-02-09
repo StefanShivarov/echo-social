@@ -12,10 +12,12 @@ const postRepository = {
       ],
     });
   },
+
   getPostsCreatedByUser: (userId) => {
     return Post.findAll({
       where: { userId },
       order: [["createdAt", "DESC"]],
+      include: [{ model: Comment, as: "comments", include: [{ model: User, as: "user" }] }],
     });
   },
 
@@ -26,7 +28,10 @@ const postRepository = {
           [Op.in]: userIds,
         },
       },
-      include: [{ model: User, as: "user" }],
+      include: [
+        { model: User, as: "user" },
+        { model: Comment, as: "comments", include: [{ model: User, as: "user" }] },
+      ],
       order: [["createdAt", "DESC"]],
     });
   },
@@ -38,6 +43,12 @@ const postRepository = {
   createComment: (commentData) => {
     return Comment.create(commentData);
   },
+
+  getCommentById: (commentId) => {
+    return Comment.findByPk(commentId, {
+      include: [{ model: User, as: "user" }],
+    });
+  }
 };
 
 module.exports = postRepository;
