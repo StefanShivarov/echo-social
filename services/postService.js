@@ -72,6 +72,70 @@ const postService = {
       console.error("Error deleting comment!", err);
     }
   },
+
+  getAllLikesForPost: async (postId) => {
+    try {
+      return await postRepository.getAllLikesForPost(postId);
+    } catch (err) {
+      console.error("Error fetching likes!", err);
+    }
+  },
+
+  getAllLikesForComment: async (commentId) => {
+    try {
+      return await postRepository.getAllLikesForComment(commentId);
+    } catch (err) {
+      console.error("Error fetching likes!", err);
+    }
+  },
+
+  getLikeByPostIdAndUserId: async (postId, userId) => {
+    try {
+      return await postRepository.getLikeByPostIdAndUserId(postId, userId);
+    } catch (err) {
+      console.error("Error fetching like!", err);
+    }
+  },
+
+  getLikeByCommentIdAndUserId: async (commentId, userId) => {
+    try {
+      return await postRepository.getLikeByCommentIdAndUserId(commentId, userId);
+    } catch (err) {
+      console.error("Error fetching like!", err);
+    }
+  },
+
+  createLikeForPost: async (postId, userId) => {
+    try {
+      return await postRepository.createLikeForPost(postId, userId);
+    } catch (err) {
+      console.error("Error creating like!", err);
+    }
+  },
+
+  deleteLikeForPost: async (postId, userId) => {
+    try {
+      return await postRepository.deleteLikeForPost(postId, userId);
+    } catch (err) {
+      console.error("Error deleting like!", err);
+    }
+  },
+
+  createLikeForComment: async (commentId, userId) => {
+    try {
+      return await postRepository.createLikeForComment(commentId, userId);
+    } catch (err) {
+      console.error("Error creating like!", err);
+    }
+  },
+
+  deleteLikeForComment: async (commentId, userId) => {
+    try {
+      return await postRepository.deleteLikeForComment(commentId, userId);
+    } catch (err) {
+      console.error("Error deleting like!", err);
+    }
+  },
 };
 
 module.exports = postService;
