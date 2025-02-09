@@ -25,8 +25,29 @@ const showUserProfile = async (req, res) => {
     const followingCount = await userService.getFollowingCount(userId);
     const posts = await postService.getPostsCreatedByUser(userId);
     const loggedInUserId = req.user.id;
+    const postsWithLikes = await Promise.all(
+      posts.map(async (post) => {
+        const postLiked = await postService.getLikeByPostIdAndUserId(post.id, loggedInUserId);
+        const commentsWithLikes = await Promise.all(
+          post.comments.map(async (comment) => {
+            const commentLiked = await postService.getLikeByCommentIdAndUserId(
+              comment.id,
+              loggedInUserId
+            );
+            return { ...comment.toJSON(), liked: !!commentLiked };
+          })
+        );
+        return { ...post.toJSON(), liked: !!postLiked, comments: commentsWithLikes };
+      })
+    );
 
-    res.render("profile", { user, followersCount, followingCount, posts, loggedInUserId });
+    res.render("profile", {
+      user,
+      followersCount,
+      followingCount,
+      loggedInUserId,
+      posts: postsWithLikes,
+    });
   } catch (err) {
     console.error("Error loading profile!", err);
   }
