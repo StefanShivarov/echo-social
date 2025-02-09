@@ -22,7 +22,7 @@ Like.init(
     },
     postId: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: "posts",
         key: "id",
