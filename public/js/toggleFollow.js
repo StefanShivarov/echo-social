@@ -1,10 +1,7 @@
-console.log("herereere");
-
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".follow-form").forEach((form) => {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      console.log("here");
       const userId = form.querySelector('input[name="userId"]').value;
       const isFollowed = form.querySelector("button").textContent === "Unfollow";
       const url = `http://localhost:3000/users/${userId}/${isFollowed ? "unfollow" : "follow"}`;
