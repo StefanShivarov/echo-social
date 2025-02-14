@@ -27,7 +27,10 @@ const showUserProfile = async (req, res) => {
     const loggedInUserId = req.user.id;
     const postsWithLikes = await Promise.all(
       posts.map(async (post) => {
-        const postLiked = await postService.getLikeByPostIdAndUserId(post.id, loggedInUserId);
+        const postLiked = await postService.getLikeByPostIdAndUserId(
+          post.id,
+          loggedInUserId
+        );
         const commentsWithLikes = await Promise.all(
           post.comments.map(async (comment) => {
             const commentLiked = await postService.getLikeByCommentIdAndUserId(
@@ -37,7 +40,11 @@ const showUserProfile = async (req, res) => {
             return { ...comment.toJSON(), liked: !!commentLiked };
           })
         );
-        return { ...post.toJSON(), liked: !!postLiked, comments: commentsWithLikes };
+        return {
+          ...post.toJSON(),
+          liked: !!postLiked,
+          comments: commentsWithLikes,
+        };
       })
     );
 
@@ -53,10 +60,35 @@ const showUserProfile = async (req, res) => {
   }
 };
 
+const showEditProfilePage = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const user = await userService.findUserById(userId);
+    res.render("editProfile", { user });
+  } catch (err) {
+    console.error("Error loading edit profile page!", err);
+  }
+};
+
+const editUserProfile = async (req, res) => {
+  const userId = req.user.id;
+  const { username } = req.body;
+  let profilePictureUrl = null;
+  if (req.file) {
+    profilePictureUrl = req.file.path;
+  }
+
+  try {
+    await userService.updateUser(userId, { username, profilePictureUrl });
+    res.redirect(`/users/${userId}`);
+  } catch (err) {
+    console.error("Error updating user profile!", err);
+  }
+};
+
 const showFollowing = async (req, res) => {
   const userId = req.params.id;
   try {
-    console.log(userId);
     const following = await userService.getFollowing(userId);
     res.render("following", { userId, following });
   } catch (err) {
@@ -123,4 +155,6 @@ module.exports = {
   showExplorePage,
   followUser,
   unfollowUser,
+  showEditProfilePage,
+  editUserProfile,
 };
