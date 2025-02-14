@@ -6,9 +6,9 @@
     <title>Create a New Post</title>
   </head>
   <body>
-    <form action="/posts" method="POST">
-      <input type="text" name="title" placeholder="Enter post title" required />
+    <form action="/posts" method="POST" enctype="multipart/form-data">
       <textarea name="content" placeholder="What's on your mind?..."></textarea>
+      <input type="file" id="image" name="image" accept="image/*" />
       <button type="submit">Create Post</button>
     </form>
     <a href="/">Back to Home</a>
