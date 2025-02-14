@@ -34,6 +34,10 @@ User.init(
       type: DataTypes.STRING,
       unique: true,
     },
+    profilePictureUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     sequelize,
