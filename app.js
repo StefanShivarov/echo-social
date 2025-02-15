@@ -8,6 +8,7 @@ const homeRouter = require("./routers/homeRouter");
 const userRouter = require("./routers/userRouter");
 const authRouter = require("./routers/authRouter");
 const postRouter = require("./routers/postRouter");
+const chatRouter = require("./routers/chatRouter");
 require("./models");
 const methodOverride = require("method-override");
 
@@ -46,6 +47,7 @@ app.use((req, res, next) => {
 
 app.use(homeRouter, userRouter, postRouter);
 app.use("/auth", authRouter);
+app.use("/direct", chatRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

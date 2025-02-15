@@ -1,5 +1,6 @@
 const userService = require("../services/userService");
 const postService = require("../services/postService");
+const chatService = require("../services/chatService");
 
 const showSignUpForm = (req, res) => {
   res.render("signup");
@@ -25,12 +26,13 @@ const showUserProfile = async (req, res) => {
     const followingCount = await userService.getFollowingCount(userId);
     const posts = await postService.getPostsCreatedByUser(userId);
     const loggedInUserId = req.user.id;
+    let chat = null;
+    if (loggedInUserId) {
+      chat = await chatService.findChatByUsers(loggedInUserId, userId);
+    }
     const postsWithLikes = await Promise.all(
       posts.map(async (post) => {
-        const postLiked = await postService.getLikeByPostIdAndUserId(
-          post.id,
-          loggedInUserId
-        );
+        const postLiked = await postService.getLikeByPostIdAndUserId(post.id, loggedInUserId);
         const commentsWithLikes = await Promise.all(
           post.comments.map(async (comment) => {
             const commentLiked = await postService.getLikeByCommentIdAndUserId(
@@ -54,6 +56,7 @@ const showUserProfile = async (req, res) => {
       followingCount,
       loggedInUserId,
       posts: postsWithLikes,
+      chat,
     });
   } catch (err) {
     console.error("Error loading profile!", err);
