@@ -1,0 +1,14 @@
+<nav>
+  <h3><a href="/">Echo Social</a></h3>
+  <div class="nav-links">
+    <% if (user) { %>
+    <a href="/explore">Explore</a>
+    <a href="/create-post">Create a new Post</a>
+    <a href="/users/<%= user.id %>"><%= user.username %></a>
+    <a href="/auth/signout">Sign Out</a>
+    <% } else { %>
+    <a href="/signup">Sign Up</a>
+    <a href="/signin">Sign In</a>
+    <% } %>
+  </div>
+</nav>
