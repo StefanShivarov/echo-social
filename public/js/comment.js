@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
           const comment = await response.json();
           const commentsList = form.previousElementSibling;
-          console.log(commentsList);
           const commentElement = document.createElement("li");
           commentElement.innerHTML = `
             <a href="/users/${comment.userId}"><h4>${comment.user.username}</h4></a>

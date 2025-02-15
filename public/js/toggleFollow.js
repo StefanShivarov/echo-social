@@ -11,9 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
         });
-
-        console.log(response);
-
+        
         if (response.ok) {
           const button = form.querySelector("button");
           button.textContent = isFollowed ? "Follow" : "Unfollow";

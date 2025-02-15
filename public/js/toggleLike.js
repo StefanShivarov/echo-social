@@ -1,5 +1,3 @@
-console.log("executing toggle");
-
 document.addEventListener("DOMContentLoaded", () => {
   const toggleLike = async (url, form) => {
     try {
@@ -32,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.querySelectorAll(".like-comment-form").forEach((form) => {
-    console.log("toggle comment like");
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const url = form.getAttribute("action");
