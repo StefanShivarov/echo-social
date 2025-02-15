@@ -27,6 +27,14 @@
       Following:
       <a href="/users/<%= user.id %>/following"><%= followingCount %></a>
     </p>
+    <% if (chat) { %>
+    <a href="/direct/<%= chat.id %>">Message</a>
+    <% } else { %>
+    <form action="/direct" method="POST">
+      <input type="hidden" name="userId" value="<%= user.id %>" />
+      <input type="submit" value="Start new conversation" />
+    </form>
+    <% } %>
     <h2>Posts</h2>
     <ul>
       <% posts.forEach(post => { %>
@@ -39,17 +47,9 @@
         <% if (post.imageUrl) { %>
         <img src="<%= post.imageUrl %>" alt="Post Image" />
         <% } %>
-        <form
-          action="/posts/<%= post.id %>/like"
-          method="POST"
-          class="like-post-form"
-        >
-          <button type="submit" class="like-button">
-            <%= post.liked ? 'Unlike' : 'Like' %>
-          </button>
-          <a class="likes-count" href="/posts/<%= post.id %>/likes"
-            ><%= post.likes.length %></a
-          >
+        <form action="/posts/<%= post.id %>/like" method="POST" class="like-post-form">
+          <button type="submit" class="like-button"><%= post.liked ? 'Unlike' : 'Like' %></button>
+          <a class="likes-count" href="/posts/<%= post.id %>/likes"><%= post.likes.length %></a>
         </form>
         <% if (post.userId === loggedInUserId) { %>
         <a href="/posts/<%= post.id %>/edit">Edit</a>
@@ -61,9 +61,7 @@
         <ul class="comments-list">
           <% post.comments.forEach(comment => { %>
           <li>
-            <a href="/users/<%= comment.user.id %>"
-              ><h4><%= comment.user.username %></h4></a
-            >
+            <a href="/users/<%= comment.user.id %>"><h4><%= comment.user.username %></h4></a>
             <p><%= comment.content %></p>
             <small><%= comment.createdAt.toDateString() %></small>
             <form
@@ -74,9 +72,7 @@
               <button type="submit" class="like-button">
                 <%= comment.liked ? 'Unlike' : 'Like' %>
               </button>
-              <a
-                class="likes-count"
-                href="/posts/<%= post.id %>/comments/<%= comment.id %>/likes"
+              <a class="likes-count" href="/posts/<%= post.id %>/comments/<%= comment.id %>/likes"
                 ><%= comment.likes.length %></a
               >
             </form>
@@ -92,11 +88,7 @@
           </li>
           <% }) %>
         </ul>
-        <form
-          action="/posts/<%= post.id %>/comments"
-          method="POST"
-          class="comment-form"
-        >
+        <form action="/posts/<%= post.id %>/comments" method="POST" class="comment-form">
           <textarea name="content" placeholder="Add a comment..."></textarea>
           <button type="submit">Comment</button>
         </form>
@@ -106,9 +98,5 @@
     <a href="/">Back to Home</a>
   </body>
   <script type="text/javascript" charset="utf-8" src="/js/comment.js"></script>
-  <script
-    type="text/javascript"
-    charset="utf-8"
-    src="/js/toggleLike.js"
-  ></script>
+  <script type="text/javascript" charset="utf-8" src="/js/toggleLike.js"></script>
 </html>

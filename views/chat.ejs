@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Echo Social</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="/js/chat.js"></script>
+    <style>
+      .message-sent {
+        text-align: right;
+        background-color: #dcf8c6;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 5px;
+      }
+      .message-received {
+        text-align: left;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Chat</h1>
+    <h3><%= otherUser.username %></h3>
+    <input type="hidden" name="chatId" id="chatId" value="<%= chatId %>" />
+    <input type="hidden" name="senderId" id="senderId" value="<%= currentUser.id %>" />
+    <div id="messages">
+      <ul>
+        <% messages.forEach(message => { %>
+        <li
+          class="<%= message.senderId === currentUser.id ? 'message-sent' : 'message-received' %>"
+        >
+          <%= message.content %>
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+    <input type="text" name="messageInput" id="messageInput" placeholder="Type a message..." />
+    <button id="sendButton">Send</button>
+  </body>
+</html>
