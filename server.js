@@ -1,6 +1,8 @@
 const app = require("./app");
 const { sequelize } = require("./config/databaseConfig");
-
+const { Server } = require("socket.io");
+const Message = require("./models/Message");
+const http = require("http");
 const PORT = 3000;
 
 const connectToDatabase = async () => {
@@ -19,7 +21,29 @@ const connectToDatabase = async () => {
   try {
     await connectToDatabase();
 
-    const server = app.listen(PORT, () => {
+    const server = http.createServer(app);
+    const io = new Server(server);
+
+    io.on("connection", (socket) => {
+      console.log("New client connected");
+
+      socket.on("joinChat", async ({ chatId }) => {
+        console.log("User joined ", chatId);
+        socket.join(chatId);
+      });
+
+      socket.on("sendMessage", async ({ chatId, senderId, content }) => {
+        const message = await Message.create({ chatId, senderId, content });
+        io.to(chatId).emit("receiveMessage", message);
+        console.log("Emitted: ", message);
+      });
+
+      socket.on("disconnect", () => {
+        console.log("Client disconnected.");
+      });
+    });
+
+    server.listen(PORT, () => {
       console.log(`Server is listening on port ${PORT}`);
     });
 
