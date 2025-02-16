@@ -1,14 +1,67 @@
-<nav>
-  <h3><a href="/">Echo Social</a></h3>
-  <div class="nav-links">
-    <% if (user) { %>
-    <a href="/explore">Explore</a>
-    <a href="/create-post">Create a new Post</a>
-    <a href="/users/<%= user.id %>"><%= user.username %></a>
-    <a href="/auth/signout">Sign Out</a>
-    <% } else { %>
-    <a href="/signup">Sign Up</a>
-    <a href="/signin">Sign In</a>
-    <% } %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Echo Social</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNav"
+    aria-controls="navbarNav"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <% if (user) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/explore">Explore</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/create-post">Create a new Post</a>
+      </li>
+      <li class="nav-item d-flex align-items-center">
+        <a class="nav-link d-flex" href="/users/<%= user.id %>">
+          <% if (user.profilePictureUrl) { %>
+          <img
+            src="<%= user.profilePictureUrl %>"
+            alt="<%= user.username %>"
+            class="profile-pic mr-2"
+          />
+          <% } else { %>
+          <img
+            src="https://thumbs.dreamstime.com/b/default-profile-picture-avatar-user-icon-person-head-icons-anonymous-male-female-businessman-photo-placeholder-social-network-272206807.jpg"
+            alt="<%= user.username %>"
+            class="profile-pic mr-2"
+          />
+          <% } %> <%= user.username %>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/auth/signout">Sign Out</a>
+      </li>
+      <% } else { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/signup">Sign Up</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/auth/signin">Sign In</a>
+      </li>
+      <% } %>
+    </ul>
   </div>
 </nav>
+<style>
+  .profile-pic {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+    vertical-align: middle;
+  }
+
+  #navbarNav ul {
+    text-align: center;
+    vertical-align: center;
+  }
+</style>

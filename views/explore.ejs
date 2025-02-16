@@ -4,23 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Explore</title>
+    <%- include('partials/bootstrap') %>
   </head>
   <body>
-    <% usersNotFollowed.forEach(user => { %>
-    <div class="user-card">
-      <a href="/users/<%= user.id %>/"><%= user.username %></a>
-      <form
-        class="follow-form"
-        method="POST"
-        action="/users/<%= user.id %>/<%= user.isFollowing ? 'unfollow' : 'follow' %>"
-      >
-        <input type="hidden" name="userId" value="<%= user.id %>" />
-        <button type="submit" class="follow-btn">
-          <%= user.isFollowing ? 'Unfollow' : 'Follow' %>
-        </button>
-      </form>
+    <%- include('partials/navbar', { user: user }) %>
+    <div class="container mt-4">
+      <h1>Explore</h1>
+      <section class="users-section">
+        <% usersNotFollowed.forEach(user => { %>
+        <div class="card mb-3">
+          <div class="card-body">
+            <a href="/users/<%= user.id %>"><%= user.username %></a>
+            <form
+              class="follow-form"
+              method="POST"
+              action="/users/<%= user.id %>/<%= user.isFollowing ? 'unfollow' : 'follow' %>"
+            >
+              <input type="hidden" name="userId" value="<%= user.id %>" />
+              <button type="submit" class="btn btn-primary">
+                <%= user.isFollowing ? 'Unfollow' : 'Follow' %>
+              </button>
+            </form>
+          </div>
+        </div>
+        <% }); %>
+      </section>
     </div>
-    <% }); %>
+    <%- include('partials/footer') %>
+    <script type="text/javascript" charset="utf-8" src="/js/toggleFollow.js"></script>
   </body>
-  <script type="text/javascript" charset="utf-8" src="/js/toggleFollow.js"></script>
 </html>

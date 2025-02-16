@@ -4,18 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Post</title>
+    <%- include('partials/bootstrap') %>
   </head>
   <body>
-    <h2>Edit Post</h2>
-    <form
-      action="/posts/<%= post.id %>?_method=PUT"
-      method="POST"
-      enctype="multipart/form-data"
-    >
-      <textarea name="content" required><%= post.content %></textarea>
-      <input type="file" name="image" accept="image/*" />
-      <button type="submit">Edit Post</button>
-    </form>
-    <a href="/users/<%= post.userId %>">Back to Profile</a>
+    <%- include('partials/navbar', { user: user }) %>
+    <div class="container mt-4">
+      <h2>Edit Post</h2>
+      <form action="/posts/<%= post.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <textarea name="content" class="form-control" required><%= post.content %></textarea>
+        </div>
+        <div class="form-group">
+          <input type="file" name="image" accept="image/*" class="form-control-file" />
+        </div>
+        <button type="submit" class="btn btn-primary">Edit Post</button>
+      </form>
+      <a href="/users/<%= post.userId %>" class="btn btn-link mt-3">Back to Profile</a>
+    </div>
+    <%- include('partials/footer') %>
   </body>
 </html>

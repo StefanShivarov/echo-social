@@ -4,36 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Profile</title>
+    <%- include('partials/bootstrap') %>
   </head>
   <body>
-    <h1>Edit Profile</h1>
-    <form
-      id="editProfileForm"
-      action="/profile/edit"
-      method="POST"
-      enctype="multipart/form-data"
-    >
-      <div>
-        <label for="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value="<%= user.username %>"
-          required
-        />
-      </div>
-      <div>
-        <label for="profilePicture">Profile Picture:</label>
-        <input
-          type="file"
-          id="profilePicture"
-          name="profilePicture"
-          accept="image/*"
-        />
-      </div>
-      <button type="submit">Save Changes</button>
-    </form>
-    <a href="/users/<%= user.id %>">Back to Profile</a>
+    <%- include('partials/navbar', { user: user }) %>
+    <div class="container mt-4">
+      <h1>Edit Profile</h1>
+      <form id="editProfileForm" action="/profile/edit" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value="<%= user.username %>"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="profilePicture">Profile Picture:</label>
+          <input
+            type="file"
+            id="profilePicture"
+            name="profilePicture"
+            accept="image/*"
+            class="form-control-file"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </form>
+      <a href="/users/<%= user.id %>" class="btn btn-link mt-3">Back to Profile</a>
+    </div>
+    <%- include('partials/footer') %>
   </body>
 </html>

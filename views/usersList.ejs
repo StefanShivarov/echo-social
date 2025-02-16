@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Echo Social</title>
+    <%- include('partials/bootstrap') %>
+    <style>
+      .profile-pic {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('partials/navbar', { user: user }) %>
+    <div class="container mt-4">
+      <h1><%= title %></h1>
+      <ul class="list-group">
+        <% users.forEach(user => { %>
+        <li class="list-group-item d-flex align-items-center">
+          <% if (user.profilePictureUrl) { %>
+          <img src="<%= user.profilePictureUrl %>" alt="<%= user.username %>" class="profile-pic" />
+          <% } else { %>
+          <img
+            src="https://thumbs.dreamstime.com/b/default-profile-picture-avatar-user-icon-person-head-icons-anonymous-male-female-businessman-photo-placeholder-social-network-272206807.jpg"
+            alt="<%= user.username %>"
+            class="profile-pic"
+          />
+          <% } %>
+          <a href="/users/<%= user.id %>"><%= user.username %></a> (<%= user.email %>)
+        </li>
+        <% }) %>
+      </ul>
+      <a href="<%= backLink %>" class="btn btn-link mt-3">Back</a>
+    </div>
+    <%- include('partials/footer') %>
+  </body>
+</html>

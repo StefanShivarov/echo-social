@@ -4,24 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign In</title>
+    <%- include('partials/bootstrap') %>
   </head>
   <body>
-    <h1>Sign In</h1>
-    <% if (messages.error) { %>
-    <div class="error-message">
-      <% messages.error.forEach(message => { %>
-      <p><%= message %></p>
-      <% }) %>
+    <%- include('partials/navbar', { user: null }) %>
+    <div class="container mt-4">
+      <h1 class="text-center">Sign In</h1>
+      <% if (messages.error) { %>
+      <div class="alert alert-danger">
+        <% messages.error.forEach(message => { %>
+        <p><%= message %></p>
+        <% }) %>
+      </div>
+      <% } %>
+      <form action="/auth/signin" method="POST" class="mt-4">
+        <div class="form-group">
+          <input type="email" name="email" class="form-control" placeholder="Email" required />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            placeholder="Password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+      </form>
+      <div class="text-center mt-3">
+        <p>Or sign in with:</p>
+        <a href="/auth/google" class="btn btn-danger">Sign In with Google</a>
+      </div>
     </div>
-    <% } %>
-    <form action="/auth/signin" method="POST">
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="password" name="password" placeholder="Password" required />
-      <button type="submit">Sign In</button>
-    </form>
-    <div>
-      <p>Or sign in with:</p>
-      <a href="/auth/google" class="google-button">Sign In with Google</a>
-    </div>
+    <%- include('partials/footer') %>
   </body>
 </html>

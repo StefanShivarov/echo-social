@@ -4,10 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Echo</title>
+    <%- include('partials/bootstrap') %>
   </head>
   <body>
-    <h1>Welcome to Echo Social</h1>
-    <a href="/auth/signin">Sign In</a>
-    <a href="/signup">Sign Up</a>
+    <%- include('partials/navbar', { user: null }) %>
+    <div class="container mt-4">
+      <h1>Welcome to Echo Social</h1>
+      <a href="/auth/signin" class="btn btn-primary">Sign In</a>
+      <a href="/signup" class="btn btn-secondary">Sign Up</a>
+    </div>
+    <%- include('partials/footer') %>
   </body>
 </html>

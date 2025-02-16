@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Echo Social</title>
+    <%- include('partials/bootstrap') %>
     <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="/js/chat.js"></script>
     <style>
@@ -24,22 +25,36 @@
     </style>
   </head>
   <body>
-    <h1>Chat</h1>
-    <h3><%= otherUser.username %></h3>
-    <input type="hidden" name="chatId" id="chatId" value="<%= chatId %>" />
-    <input type="hidden" name="senderId" id="senderId" value="<%= currentUser.id %>" />
-    <div id="messages">
-      <ul>
-        <% messages.forEach(message => { %>
-        <li
-          class="<%= message.senderId === currentUser.id ? 'message-sent' : 'message-received' %>"
-        >
-          <%= message.content %>
-        </li>
-        <% }) %>
-      </ul>
+    <%- include('partials/navbar', { user: currentUser }) %>
+    <div class="container mt-4">
+      <h1>Chat</h1>
+      <h3><%= otherUser.username %></h3>
+      <input type="hidden" name="chatId" id="chatId" value="<%= chatId %>" />
+      <input type="hidden" name="senderId" id="senderId" value="<%= currentUser.id %>" />
+      <div id="messages" class="mb-3">
+        <ul class="list-unstyled">
+          <% messages.forEach(message => { %>
+          <li
+            class="<%= message.senderId === currentUser.id ? 'message-sent' : 'message-received' %>"
+          >
+            <%= message.content %>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          name="messageInput"
+          id="messageInput"
+          class="form-control"
+          placeholder="Type a message..."
+        />
+        <div class="input-group-append">
+          <button id="sendButton" class="btn btn-primary">Send</button>
+        </div>
+      </div>
     </div>
-    <input type="text" name="messageInput" id="messageInput" placeholder="Type a message..." />
-    <button id="sendButton">Send</button>
+    <%- include('partials/footer') %>
   </body>
 </html>
