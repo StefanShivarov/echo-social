@@ -46,9 +46,7 @@ const deletePost = async (req, res) => {
   try {
     const post = await postService.getPostById(postId);
     if (post.userId !== req.user.id) {
-      return res
-        .status(403)
-        .send("You are not authorized to delete this post!");
+      return res.status(403).send("You are not authorized to delete this post!");
     }
     await postService.deletePostById(postId);
     res.redirect(`/users/${req.user.id}`);
@@ -62,20 +60,15 @@ const showPostDetails = async (req, res) => {
   try {
     const post = await postService.getPostById(postId);
     const userId = req.user.id;
-    const postLiked = await postService.getLikeByPostIdAndUserId(
-      postId,
-      userId
-    );
+    const postLiked = await postService.getLikeByPostIdAndUserId(postId, userId);
     const commentsWithLikes = await Promise.all(
       post.comments.map(async (comment) => {
-        const commentLiked = await postService.getLikeByCommentIdAndUserId(
-          comment.id,
-          userId
-        );
+        const commentLiked = await postService.getLikeByCommentIdAndUserId(comment.id, userId);
         return { ...comment.toJSON(), liked: !!commentLiked };
       })
     );
     res.render("postDetails", {
+      user: req.user,
       post,
       userId,
       postLiked: !!postLiked,
@@ -87,7 +80,7 @@ const showPostDetails = async (req, res) => {
 };
 
 const showCreatePostForm = async (req, res) => {
-  res.render("createPost");
+  res.render("createPost", { user: req.user });
 };
 
 const showEditPostForm = async (req, res) => {
@@ -97,7 +90,7 @@ const showEditPostForm = async (req, res) => {
     if (post.userId !== req.user.id) {
       return res.status(403).send("You are not authorized to edit this post!");
     }
-    res.render("editPost", { post });
+    res.render("editPost", { user: req.user, post });
   } catch (err) {
     console.error("Error fetching post!", err);
   }
@@ -126,9 +119,7 @@ const deleteComment = async (req, res) => {
   try {
     const comment = await postService.getCommentById(commentId);
     if (comment.userId !== req.user.id) {
-      return res
-        .status(403)
-        .send("You are not authorized to delete this comment!");
+      return res.status(403).send("You are not authorized to delete this comment!");
     }
     await postService.deleteCommentById(commentId);
     res.status(200).send();
@@ -140,8 +131,14 @@ const deleteComment = async (req, res) => {
 const showPostLikes = async (req, res) => {
   const postId = req.params.postId;
   try {
-    const likes = await postService.getAllLikesForPost(postId);
-    res.render("likes", { likes, postId });
+    const likeUsers = (await postService.getAllLikesForPost(postId)).map((like) => like.user);
+    res.render("usersList", {
+      user: req.user,
+      users: likeUsers,
+      postId,
+      backLink: `/posts/${postId}`,
+      title: "Post likes",
+    });
   } catch (err) {
     res.status(500).send("Error fetching likes!");
     console.error("Error fetching likes!", err);
@@ -152,8 +149,14 @@ const showCommentLikes = async (req, res) => {
   const commentId = req.params.commentId;
   const postId = req.params.postId;
   try {
-    const likes = await postService.getAllLikesForComment(commentId);
-    res.render("likes", { likes, postId });
+    const likeUsers = (await postService.getAllLikesForComment(commentId)).map((like) => like.user);
+    res.render("usersList", {
+      user: req.user,
+      users: likeUsers,
+      postId,
+      backLink: `/posts/${postId}`,
+      title: "Comment likes",
+    });
   } catch (err) {
     res.status(500).send("Error fetching likes!");
     console.error("Error fetching likes!", err);
@@ -184,10 +187,7 @@ const toggleCommentLike = async (req, res) => {
   const commentId = req.params.commentId;
   const userId = req.user.id;
 
-  const likeExists = await postService.getLikeByCommentIdAndUserId(
-    commentId,
-    userId
-  );
+  const likeExists = await postService.getLikeByCommentIdAndUserId(commentId, userId);
 
   try {
     if (likeExists) {

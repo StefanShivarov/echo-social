@@ -78,6 +78,10 @@ const userService = {
   unfollowUser: async (followerId, followingId) => {
     return await userRepository.unfollowUser(followerId, followingId);
   },
+
+  findFollowRecord: async (followerId, followingId) => {
+    return await userRepository.findFollow(followerId, followingId);
+  },
 };
 
 module.exports = userService;

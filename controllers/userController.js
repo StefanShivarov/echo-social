@@ -26,6 +26,7 @@ const showUserProfile = async (req, res) => {
     const followingCount = await userService.getFollowingCount(userId);
     const posts = await postService.getPostsCreatedByUser(userId);
     const loggedInUserId = req.user.id;
+    const isFollowed = !!(await userService.findFollowRecord(req.user.id, userId));
     let chat = null;
     if (loggedInUserId) {
       chat = await chatService.findChatByUsers(loggedInUserId, userId);
@@ -57,6 +58,8 @@ const showUserProfile = async (req, res) => {
       loggedInUserId,
       posts: postsWithLikes,
       chat,
+      isFollowed,
+      loggedInUser: req.user,
     });
   } catch (err) {
     console.error("Error loading profile!", err);
@@ -92,8 +95,16 @@ const editUserProfile = async (req, res) => {
 const showFollowing = async (req, res) => {
   const userId = req.params.id;
   try {
+    const viewedUser = await userService.findUserById(userId);
     const following = await userService.getFollowing(userId);
-    res.render("following", { userId, following });
+    res.render("usersList", {
+      user: req.user,
+      userId,
+      users: following,
+      backLink: `/users/${userId}`,
+      viewedUser,
+      title: `Users followed by ${viewedUser.username}`,
+    });
   } catch (err) {
     console.error("Error fetching followed users!", err);
   }
@@ -102,8 +113,16 @@ const showFollowing = async (req, res) => {
 const showFollowers = async (req, res) => {
   const userId = req.params.id;
   try {
+    const viewedUser = await userService.findUserById(userId);
     const followers = await userService.getFollowersForUser(userId);
-    res.render("followers", { userId, followers });
+    res.render("usersList", {
+      user: req.user,
+      userId,
+      users: followers,
+      viewedUser,
+      backLink: `/users/${userId}`,
+      title: `Users following ${viewedUser.username}`,
+    });
   } catch (err) {
     console.error("Error fetching followers!", err);
   }
@@ -111,13 +130,10 @@ const showFollowers = async (req, res) => {
 
 const showExplorePage = async (req, res) => {
   const user = req.user;
-  if (!user) {
-    return res.redirect("/signin");
-  }
 
   try {
     const usersNotFollowed = await userService.findUsersNotFollowedBy(user.id);
-    res.render("explore", { usersNotFollowed });
+    res.render("explore", { user: req.user, usersNotFollowed });
   } catch (err) {
     console.error("Error fetching users!", err);
   }

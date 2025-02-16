@@ -82,6 +82,15 @@ const userRepository = {
       where: { followerId, followingId },
     });
   },
+
+  findFollow: (followerId, followingId) => {
+    return Follow.findOne({
+      where: {
+        followerId,
+        followingId,
+      },
+    });
+  },
 };
 
 module.exports = userRepository;
