@@ -18,7 +18,11 @@ const messageTemplate = (messages) => html`
     ${messages.map(
       (msg) =>
         html`
-          <li class="${msg.senderId === currentUserId ? "message-sent" : "message-received"}">
+          <li
+            class="${msg.senderId === senderId
+              ? "message-sent"
+              : "message-received"}"
+          >
             ${msg.content}
           </li>
         `
